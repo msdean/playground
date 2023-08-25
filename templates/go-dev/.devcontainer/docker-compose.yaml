@@ -1,0 +1,13 @@
+services:
+  go-dev:
+    build:
+      context: ../
+      dockerfile: .devcontainer/Dockerfile
+    init: true
+    hostname: <PROJECT_NAME>
+    environment:
+      - PROJECT_NAME=<PROJECT_NAME>
+      - SHELL=/bin/bash
+    volumes:
+      - ../:/go/src
+    command: [".devcontainer/init.sh"]
