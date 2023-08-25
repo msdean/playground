@@ -2,17 +2,17 @@ package main
 
 import "testing"
 
-func Test_myfunc(t *testing.T) {
+func Test_Main(t *testing.T) {
 	tests := []struct {
 		name string
 	}{
 		{
-			name: "testing debugger",
+			name: "testing main",
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			myfunc()
+			main()
 		})
 	}
 }
