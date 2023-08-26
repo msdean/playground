@@ -54,5 +54,12 @@ else
         echo "Project $project_name already exists. Will open it now."
 fi
 
+
 # Open project in VSCode
-code "$project_dir"
+if [ -z "$LOCAL_PLAYGROUND" ]; then
+  echo "Running project $project_name in VSCode, don't forget to run 'Dev Containers: Rebuild and Reopen in Container' after VSCode opens"
+  code $project_dir
+else
+  echo "Running project $project_name in VSCode Dev Container."
+  code --folder-uri vscode-remote://dev-container+$(echo -n $project_dir | xxd -p)/go/src
+fi
