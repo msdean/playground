@@ -40,7 +40,9 @@ function Start-Playground() {
     if (!(Test-Path $project_dir -PathType Container)) {
         Write-Host "Creating project $project_name"
         Copy-Item -Path $playground_template_dir -Destination $project_dir -Recurse
-  (Get-Content "$project_dir\.devcontainer\docker-compose.yaml") -replace "<PROJECT_NAME>", "$project_name" | Set-Content "$project_dir\.devcontainer\docker-compose.yaml"
+
+        # Replace project name in docker-compose.yaml
+        (Get-Content "$project_dir\.devcontainer\docker-compose.yaml") -replace "<PROJECT_NAME>", "$project_name" | Set-Content "$project_dir\.devcontainer\docker-compose.yaml"
     }
     else {
         Write-Host "Project $project_name already exists. Will open it now."
@@ -56,13 +58,13 @@ New-Alias -Name play -Value Start-Playground
 New-Alias -Name playground -Value Start-Playground
 
 Register-ArgumentCompleter -CommandName Start-Playground -ParameterName project_name -ScriptBlock {
-    param($commandName,$parameterName,$stringMatch)
+    param($commandName, $parameterName, $stringMatch)
     $projects = Get-ChildItem -Path $playground_projects_dir -Directory | Select-Object -ExpandProperty Name
     $projects | Where-Object { $_ -like "$stringMatch*" }
 }
 
 Register-ArgumentCompleter -CommandName Start-Playground -ParameterName template -ScriptBlock {
-    param($commandName,$parameterName,$stringMatch)
+    param($commandName, $parameterName, $stringMatch)
     $projects = Get-ChildItem -Path $playground_template_dir -Directory | Select-Object -ExpandProperty Name
     $projects | Where-Object { $_ -like "$stringMatch*" }
 }
