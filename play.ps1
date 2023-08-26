@@ -17,12 +17,16 @@ function ConvertTo-AsciiHex {
     return $hexString
 }
 
-function Start-Playground() {
+function Playground() {
     param (
         [CmdletBinding()]
         [Parameter(Mandatory = $false)]
         [string]$project_name = "testproj",
         [Parameter(Mandatory = $false)]
+        [ValidateScript(
+            { $_ -in (Get-PlaygroundTemplates) },
+            ErrorMessage = "Invalid template name. Use Tab autocompletion or Get-PlaygroundTemplates to see available templates."
+        )]
         [string]$template = "go-dev"
     )
 
@@ -54,17 +58,31 @@ function Start-Playground() {
     $project_name_hex = ConvertTo-AsciiHex $project_dir
     & code --folder-uri vscode-remote://dev-container+$project_name_hex/go/src
 }
-New-Alias -Name play -Value Start-Playground
-New-Alias -Name playground -Value Start-Playground
+New-Alias -Name play -Value Playground
 
-Register-ArgumentCompleter -CommandName Start-Playground -ParameterName project_name -ScriptBlock {
-    param($commandName, $parameterName, $stringMatch)
-    $projects = Get-ChildItem -Path $playground_projects_dir -Directory | Select-Object -ExpandProperty Name
-    $projects | Where-Object { $_ -like "$stringMatch*" }
+Function Get-Subdirs {
+    param (
+        [Parameter(Mandatory = $true)]
+        [string]$path
+    )
+
+    Get-ChildItem -Path $path -Directory | Select-Object -ExpandProperty Name
 }
 
-Register-ArgumentCompleter -CommandName Start-Playground -ParameterName template -ScriptBlock {
+Function Get-PlaygroundProjects {
+    Get-Subdirs $playground_projects_dir
+}
+
+Function Get-PlaygroundTemplates {
+    Get-Subdirs $playground_template_dir
+}
+
+Register-ArgumentCompleter -CommandName Playground -ParameterName project_name -ScriptBlock {
     param($commandName, $parameterName, $stringMatch)
-    $projects = Get-ChildItem -Path $playground_template_dir -Directory | Select-Object -ExpandProperty Name
-    $projects | Where-Object { $_ -like "$stringMatch*" }
+    Get-PlaygroundProjects | Where-Object { $_ -like "$stringMatch*" }
+}
+
+Register-ArgumentCompleter -CommandName Playground -ParameterName template -ScriptBlock {
+    param($commandName, $parameterName, $stringMatch)
+    Get-PlaygroundTemplates | Where-Object { $_ -like "$stringMatch*" }
 }
