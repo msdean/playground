@@ -49,7 +49,9 @@ mkdir -p "$rootdir/projects"
 if [ ! -d "$project_dir" ]; then
         echo "Creating project $project_name"
         cp -ra $template_dir $project_dir
-        sed -i "s/<PROJECT_NAME>/$project_name/g" "$project_dir/.devcontainer/docker-compose.yaml"
+        for file in docker-compose.yaml devcontainer.json; do
+                sed -i "s/<PROJECT_NAME>/$project_name/g" "$project_dir/.devcontainer/$file"
+        done
 else
         echo "Project $project_name already exists. Will open it now."
 fi

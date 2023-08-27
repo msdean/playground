@@ -46,10 +46,12 @@ function Playground() {
 
         Copy-Item -Path "$playground_template_dir\*" -Destination $project_dir -Recurse
 
-        # Replace project name in docker-compose.yaml
-        (Get-Content "$project_dir\.devcontainer\docker-compose.yaml") -replace "<PROJECT_NAME>", "$project_name" | Set-Content "$project_dir\.devcontainer\docker-compose.yaml"
-    }
-    else {
+        # Replace project name in relevant files in .devcontainer directory
+        foreach ($file in @("docker-compose.yaml", "devcontainer.json")) {
+            # Do something with the file
+            Replace-In-File -path "$project_dir\.devcontainer\$file" -pattern "<PROJECT_NAME>" -replacement "$project_name"
+        }
+    } else {
         Write-Host "Project $project_name already exists. Will open it now."
     }
 
@@ -60,6 +62,19 @@ function Playground() {
     & code --folder-uri vscode-remote://dev-container+$project_name_hex/go/src
 }
 New-Alias -Name play -Value Playground
+
+Function Replace-In-File {
+    param (
+        [Parameter(Mandatory = $true)]
+        [string]$path,
+        [Parameter(Mandatory = $true)]
+        [string]$pattern,
+        [Parameter(Mandatory = $true)]
+        [string]$replacement
+    )
+
+    (Get-Content $path) -replace $pattern, $replacement | Set-Content $path
+}
 
 Function Get-Subdirs {
     param (
