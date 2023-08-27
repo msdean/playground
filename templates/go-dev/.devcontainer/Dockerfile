@@ -38,9 +38,3 @@ RUN git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && \
 WORKDIR /go/src
 
 COPY .devcontainer/.bashrc /home/dev/
-
-# Switch to the dev user
-USER dev
-
-# Set the working directory
-WORKDIR /go/src

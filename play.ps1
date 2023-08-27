@@ -21,7 +21,7 @@ function Playground() {
     param (
         [CmdletBinding()]
         [Parameter(Mandatory = $false)]
-        [string]$project_name = "testproj",
+        [string]$project_name = "go-playground",
         [Parameter(Mandatory = $false)]
         [ValidateScript(
             { $_ -in (Get-PlaygroundTemplates) },
@@ -33,7 +33,7 @@ function Playground() {
     $project_dir = Join-Path $playground_projects_dir $project_name
 
     if (!(Test-Path $playground_template_dir -PathType Container)) {
-        Write-Host "Template $template does not exist"
+        throw "Template $template does not exist"
         exit 1
     }
 
@@ -43,7 +43,8 @@ function Playground() {
     # Check if project already exists, if it's not create it
     if (!(Test-Path $project_dir -PathType Container)) {
         Write-Host "Creating project $project_name"
-        Copy-Item -Path $playground_template_dir -Destination $project_dir -Recurse
+
+        Copy-Item -Path "$playground_template_dir\*" -Destination $project_dir -Recurse
 
         # Replace project name in docker-compose.yaml
         (Get-Content "$project_dir\.devcontainer\docker-compose.yaml") -replace "<PROJECT_NAME>", "$project_name" | Set-Content "$project_dir\.devcontainer\docker-compose.yaml"

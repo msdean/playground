@@ -32,7 +32,7 @@ shift $((OPTIND - 1))
 # Initialize variables
 readonly rootdir=$(dirname "$(realpath $0)")
 readonly template_dir="$rootdir/templates/$template"
-readonly project_name=${1:-"testproj"}
+readonly project_name=${1:-"go-playground"}
 readonly project_dir="$rootdir/projects/$project_name"
 
 
