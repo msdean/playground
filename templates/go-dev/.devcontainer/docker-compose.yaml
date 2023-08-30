@@ -8,6 +8,13 @@ services:
     environment:
       - PROJECT_NAME=<PROJECT_NAME>
       - SHELL=/bin/bash
+      - GOCACHE=/go/.cache/go-build
+      - GOENV=/go/.config/go/env
     volumes:
-      - ../:/go/src
-    command: [".devcontainer/init.sh"]
+      - ../src/:/go/src
+      - ../pkg/:/go/pkg
+      - ../.cache/:/go/.cache
+      - ../.config/:/go/.config
+      - ../.devcontainer/:/.devcontainer
+      - ~/.ssh/:/home/dev/.ssh:ro
+    command: ["/.devcontainer/init.sh"]

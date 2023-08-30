@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-logfile=".devcontainer/init.log"
+logfile="/.devcontainer/init.log"
 echo "Booting up project $PROJECT_NAME" > $logfile
 
 if [ ! -f "go.mod" ]; then

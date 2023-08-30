@@ -1,4 +1,10 @@
-$playground_rootdir = Split-Path -Parent $MyInvocation.MyCommand.Path
+
+$playground_rootdir=""
+if ($IsWindows) {
+    $playground_rootdir = Split-Path -Parent $MyInvocation.MyCommand.Path
+} else {
+    $playground_rootdir = Split-Path -Parent (wslpath -w $MyInvocation.MyCommand.Path)
+}
 $playground_template_dir = Join-Path $playground_rootdir "templates" $template
 $playground_projects_dir = Join-Path $playground_rootdir "projects"
 
