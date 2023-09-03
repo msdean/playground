@@ -33,7 +33,7 @@ play [-t <template name>] [<project-name>]
 - If running on a local machine, set the variable `PLAYGROUND_LOCAL` to `true` before running the script, and it should open the devcontainer automatically.
 
 ## Windows
-Source the script in a powershell session. Recommended to import it in your `$PROFILE``:
+Source the script in a powershell session. Recommended to import it in your `$PROFILE`:
 ```
 . ./play.ps1
 ```
@@ -50,8 +50,8 @@ or
 ```
 play [-template_name <template name>] [-project_name <project-name>]
 ```
-- `-template_name <template name>`: optional, which project template to use. Defaults to `go-dev`.
-- `-project_name <project-name>`: optional, name of the project. Defaults to `testproj`.
+- `-template_name <template name>`: optional, which project template to use. Defaults to `go-dev`. Hit `tab` for auto-completion.
+- `-project_name <project-name>`: optional, name of the project. Defaults to `testproj`. Hit `tab` for auto-completion.
 
 
 # Templates
