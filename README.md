@@ -25,7 +25,7 @@ Run the script:
 play [-t <template name>] [<project-name>]
 ```
 - `-t <template name>`: optional, which project template to use. Defaults to `go-dev`.
-- `<project-name>`: optional, name of the project. Defaults to `testproj`.
+- `<project-name>`: optional, name of the project. Defaults to `go-playground`.
 
 #
 
@@ -51,7 +51,7 @@ or
 play [-template_name <template name>] [-project_name <project-name>]
 ```
 - `-template_name <template name>`: optional, which project template to use. Defaults to `go-dev`. Hit `tab` for auto-completion.
-- `-project_name <project-name>`: optional, name of the project. Defaults to `testproj`. Hit `tab` for auto-completion.
+- `-project_name <project-name>`: optional, name of the project. Defaults to `go-playground`. Hit `tab` for auto-completion.
 
 
 # Templates
