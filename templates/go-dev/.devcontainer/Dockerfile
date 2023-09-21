@@ -27,6 +27,7 @@ RUN locale-gen en_US.UTF-8
 
 RUN echo 'dev ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 RUN useradd -m dev && echo "dev:dev" | chpasswd && adduser dev sudo
+RUN chown -R dev:dev /go
 
 # Switch to the dev user
 USER dev
