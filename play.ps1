@@ -5,7 +5,7 @@ if ($IsWindows) {
 } else {
     $playground_rootdir = Split-Path -Parent (wslpath -w $MyInvocation.MyCommand.Path)
 }
-$playground_template_dir = Join-Path $playground_rootdir "templates" $template
+$playground_template_dir = Join-Path $playground_rootdir "templates"
 $playground_projects_dir = Join-Path $playground_rootdir "projects"
 
 function ConvertTo-AsciiHex {
@@ -37,8 +37,9 @@ function Playground() {
     )
 
     $project_dir = Join-Path $playground_projects_dir $project_name
+    $template_dir = Join-Path $playground_template_dir $template
 
-    if (!(Test-Path $playground_template_dir -PathType Container)) {
+    if (!(Test-Path $template_dir -PathType Container)) {
         throw "Template $template does not exist"
         exit 1
     }
@@ -50,7 +51,7 @@ function Playground() {
     if (!(Test-Path $project_dir -PathType Container)) {
         Write-Host "Creating project $project_name"
 
-        Copy-Item -Path "$playground_template_dir\*" -Destination $project_dir -Recurse
+        Copy-Item -Path $template_dir -Destination $project_dir -Recurse -Force
 
         # Replace project name in relevant files in .devcontainer directory
         foreach ($file in @("docker-compose.yaml", "devcontainer.json")) {
@@ -63,9 +64,12 @@ function Playground() {
 
     Write-Host "Opening project $project_name from directory $project_dir"
 
+    # Get workdir
+    $workdir = (Get-Content "$project_dir\.devcontainer\devcontainer.json" | ConvertFrom-Json).workspaceFolder
+
     # Open project in VSCode as a dev container
     $project_name_hex = ConvertTo-AsciiHex $project_dir
-    & code --folder-uri vscode-remote://dev-container+$project_name_hex/go/src
+    & code --folder-uri vscode-remote://dev-container+$project_name_hex/$workdir
 }
 New-Alias -Name play -Value Playground
 

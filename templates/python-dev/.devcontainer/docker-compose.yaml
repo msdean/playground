@@ -1,0 +1,15 @@
+services:
+  python-dev:
+    build:
+      context: ../
+      dockerfile: .devcontainer/Dockerfile
+    init: true
+    hostname: <PROJECT_NAME>
+    environment:
+      - PROJECT_NAME=<PROJECT_NAME>
+      - SHELL=/bin/bash
+    volumes:
+      - ../src/:/app
+      - ../.devcontainer/:/.devcontainer
+      - ~/.ssh/:/home/dev/.ssh:ro
+    command: ["/.devcontainer/init.sh"]
